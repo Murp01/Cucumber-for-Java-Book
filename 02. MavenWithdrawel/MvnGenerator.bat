@@ -1,0 +1,1 @@
+cmd /k mvn archetype:generate -DgroupId=com.murphcode.app -DartifactId=murphmaven -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
