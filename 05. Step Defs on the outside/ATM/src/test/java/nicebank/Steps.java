@@ -17,16 +17,19 @@ import cucumber.api.PendingException;
 public class Steps {
 
   class Account {
-    public void deposit(int amount) {
+	private Money balance = new Money(); 
+	 
+    public void deposit(Money amount) {
+    	balance = balance.add(amount);
     }
     
-    public int getBalance(){
-    	return(0);
+    public Money getBalance(){
+    	return balance;
     }
   }
 
-  @Given("^I have deposited \\$(\\d+) in my account$")
-  public void iHaveDeposited$InMyAccount(int amount) throws Throwable {
+  @Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
+  public void iHaveDeposited$InMyAccount(Money amount) throws Throwable {
       Account myAccount = new Account();
 	  myAccount.deposit(amount);
 	  
