@@ -12,6 +12,6 @@ import cucumber.api.SnippetType;
 import org.junit.runner.RunWith;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(plugin="pretty", snippets=SnippetType.CAMELCASE)
+@CucumberOptions(plugin="pretty", monochrome = true, snippets=SnippetType.CAMELCASE)
 public class RunCukesTest {
 }
