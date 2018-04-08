@@ -13,6 +13,9 @@ import cucumber.api.java.en.*;
 import org.junit.Assert;
 
 import cucumber.api.PendingException;
+import cucumber.api.Transform;
+
+import transforms.MoneyConverter;
 
 public class Steps {
 
@@ -29,7 +32,7 @@ public class Steps {
   }
 
   @Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
-  public void iHaveDeposited$InMyAccount(Money amount) throws Throwable {
+  public void iHaveDeposited$InMyAccount(@Transform(MoneyConverter.class)Money amount) throws Throwable {
       Account myAccount = new Account();
 	  myAccount.deposit(amount);
 	  
