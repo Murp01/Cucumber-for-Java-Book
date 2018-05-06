@@ -26,45 +26,6 @@ public class Steps {
 		helper = new knowsMyAccount();
 	}
 
-  //1. actor classes	
-  class Account {
-	private Money balance = new Money();
-	 
-    public void deposit(Money amount) {
-    	balance = balance.add(amount);
-    }
-    
-    public Money getBalance(){
-    	return balance;
-    }
-  }
-  
-  class Teller {
-	  
-	  private CashSlot cashSlot;
-	  
-	  public Teller (CashSlot cashSlot){
-		  this.cashSlot = cashSlot;
-	  }
-	  
-	  public void withdrawFrom(Account account, int dollars){
-		  cashSlot.dispense(dollars);
-	  }
-  }
-  
-  class CashSlot {
-	  private int contents;
-	  
-	  public int getContents(){
-		 return contents; 
-	  }
-	  
-	  public void dispense(int dollars){
-		  contents = dollars;
-	  }
-  }
-  
-  
   /*Helper Class named knowsMyaccount.  A method called getMyaccount
   which will be called in the step def constructor */  
   class knowsMyAccount {
