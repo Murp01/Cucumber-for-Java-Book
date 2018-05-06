@@ -18,16 +18,17 @@ public class Steps {
 	knowsMyAccount helper;
 	
 	/*Step definition class constructor where an instance of knowsMyAccount
-	is created.  This means that the initialised object 'helper' can call
-	all methods from this class.  This instance 'should' keep the state between
+	is created.  This means that the initialised object 'helper' is of the 
+	knowsMyAccount type and contains all its methods.  This instance 
+	'should' keep the state between
 	different step definition calls */
 	public Steps() {
 		helper = new knowsMyAccount();
 	}
 
-  //actor classes	
+  //1. actor classes	
   class Account {
-	private Money balance = new Money(); 
+	private Money balance = new Money();
 	 
     public void deposit(Money amount) {
     	balance = balance.add(amount);
@@ -39,15 +40,37 @@ public class Steps {
   }
   
   class Teller {
-	  public void withdrawFrom(Account account, int dollards){
-		  
+	  
+	  private CashSlot cashSlot;
+	  
+	  public Teller (CashSlot cashSlot){
+		  this.cashSlot = cashSlot;
+	  }
+	  
+	  public void withdrawFrom(Account account, int dollars){
+		  cashSlot.dispense(dollars);
 	  }
   }
+  
+  class CashSlot {
+	  private int contents;
+	  
+	  public int getContents(){
+		 return contents; 
+	  }
+	  
+	  public void dispense(int dollars){
+		  contents = dollars;
+	  }
+  }
+  
   
   /*Helper Class named knowsMyaccount.  A method called getMyaccount
   which will be called in the step def constructor */  
   class knowsMyAccount {
 	  private Account myAccount;
+	  private CashSlot cashSlot;
+	  private Teller teller;
 	  
 	  public Account getMyAccount() {
 		  if (myAccount == null){
@@ -55,9 +78,24 @@ public class Steps {
 		  }
 		return myAccount;
 	  }
-  }
-
+	  
+	  public CashSlot getCashSlot(){
+		  if (cashSlot == null ){
+			  cashSlot = new CashSlot();				  
+		  }
+			  return cashSlot;
+		  }
+	  
+	  public Teller getTeller() {
+	      if (teller == null){
+	        teller = new Teller(getCashSlot());
+	      }
+	
+	      return teller;
+	    }
   
+	  }
+    
   //step definitions
   
   @Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
@@ -68,15 +106,13 @@ public class Steps {
   }
   
   @When("^I withdraw \\$(\\d+)$")
-  public void iWithdraw$(int amount) throws Throwable {
-	  Teller teller = new Teller();
-	  teller.withdrawFrom(helper.getMyAccount(), amount);
+  public void iWithdraw$(int dollars) throws Throwable {
+	  helper.getTeller().withdrawFrom(helper.getMyAccount(), dollars);
   }
 
   @Then("^\\$(\\d+) should be dispensed$")
-  public void $ShouldBeDispensed(int arg1) throws Throwable {
-      // Write code here that turns the phrase above into concrete actions
-      throw new PendingException();
+  public void $ShouldBeDispensed(int dollars) throws Throwable {
+	  Assert.assertEquals("Incorrect amount dispensed" , dollars, helper.getCashSlot().getContents());
   }
   
 }
