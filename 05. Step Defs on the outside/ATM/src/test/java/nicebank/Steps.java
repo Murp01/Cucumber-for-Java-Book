@@ -9,40 +9,44 @@
 package nicebank;
 
 import cucumber.api.java.en.*;
+import support.KnowsTheDomain;
 
 import org.junit.Assert;
-
-import cucumber.api.PendingException;
+import cucumber.api.Transform;
+import transforms.MoneyConverter;
 
 public class Steps {
+KnowsTheDomain helper;
+	
+	/*Step definition class constructor where an instance of knowsMyAccount
+	is created.  This means that the initialised object 'helper' is of the 
+	knowsMyAccount type and contains all its methods.  This instance 
+	'should' keep the state between
+	different step definition calls */
+	public Steps() {
+		helper = new KnowsTheDomain();
+	}
 
-  class Account {
-    public void deposit(int amount) {
-    }
+ 
+
     
-    public int getBalance(){
-    	return(0);
-    }
-  }
-
-  @Given("^I have deposited \\$(\\d+) in my account$")
-  public void iHaveDeposited$InMyAccount(int amount) throws Throwable {
-      Account myAccount = new Account();
-	  myAccount.deposit(amount);
-	  
-	  Assert.assertEquals("Incorrect Account Balance - ", amount, myAccount.getBalance());
-  }
+  //step definitions
   
-  @When("^I request \\$(\\d+)$")
-  public void iRequest$(int arg1) throws Throwable {
-      // Write code here that turns the phrase above into concrete actions
-      throw new PendingException();
-  }
+	@Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
+	public void iHaveDeposited$InMyAccount(@Transform(MoneyConverter.class)Money amount) throws Throwable {
+		//Notice the helper instantiation calls two methods, in an order
+		helper.getMyAccount().deposit(amount);	  
+		Assert.assertEquals("Incorrect Account Balance - ", amount, helper.getMyAccount().getBalance());
+	}
+	  
+	@When("^I withdraw \\$(\\d+)$")
+	public void iWithdraw$(int dollars) throws Throwable {
+		helper.getTeller().withdrawFrom(helper.getMyAccount(), dollars);
+	}
 
   @Then("^\\$(\\d+) should be dispensed$")
-  public void $ShouldBeDispensed(int arg1) throws Throwable {
-      // Write code here that turns the phrase above into concrete actions
-      throw new PendingException();
+  public void $ShouldBeDispensed(int dollars) throws Throwable {
+	  Assert.assertEquals("Incorrect amount dispensed" , dollars, helper.getCashSlot().getContents());
   }
   
 }
