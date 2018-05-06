@@ -9,13 +9,14 @@
 package nicebank;
 
 import cucumber.api.java.en.*;
+import support.KnowsTheDomain;
+
 import org.junit.Assert;
-import cucumber.api.PendingException;
 import cucumber.api.Transform;
 import transforms.MoneyConverter;
 
 public class Steps {
-	knowsMyAccount helper;
+KnowsTheDomain helper;
 	
 	/*Step definition class constructor where an instance of knowsMyAccount
 	is created.  This means that the initialised object 'helper' is of the 
@@ -23,53 +24,25 @@ public class Steps {
 	'should' keep the state between
 	different step definition calls */
 	public Steps() {
-		helper = new knowsMyAccount();
+		helper = new KnowsTheDomain();
 	}
 
-  /*Helper Class named knowsMyaccount.  A method called getMyaccount
-  which will be called in the step def constructor */  
-  class knowsMyAccount {
-	  private Account myAccount;
-	  private CashSlot cashSlot;
-	  private Teller teller;
-	  
-	  public Account getMyAccount() {
-		  if (myAccount == null){
-			  myAccount = new Account();
-		  }
-		return myAccount;
-	  }
-	  
-	  public CashSlot getCashSlot(){
-		  if (cashSlot == null ){
-			  cashSlot = new CashSlot();				  
-		  }
-			  return cashSlot;
-		  }
-	  
-	  public Teller getTeller() {
-	      if (teller == null){
-	        teller = new Teller(getCashSlot());
-	      }
-	
-	      return teller;
-	    }
-  
-	  }
+ 
+
     
   //step definitions
   
-  @Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
-  public void iHaveDeposited$InMyAccount(@Transform(MoneyConverter.class)Money amount) throws Throwable {
-      //Notice the helper instantiation calls two methods, in an order
-	  helper.getMyAccount().deposit(amount);	  
-	  Assert.assertEquals("Incorrect Account Balance - ", amount, helper.getMyAccount().getBalance());
-  }
-  
-  @When("^I withdraw \\$(\\d+)$")
-  public void iWithdraw$(int dollars) throws Throwable {
-	  helper.getTeller().withdrawFrom(helper.getMyAccount(), dollars);
-  }
+	@Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
+	public void iHaveDeposited$InMyAccount(@Transform(MoneyConverter.class)Money amount) throws Throwable {
+		//Notice the helper instantiation calls two methods, in an order
+		helper.getMyAccount().deposit(amount);	  
+		Assert.assertEquals("Incorrect Account Balance - ", amount, helper.getMyAccount().getBalance());
+	}
+	  
+	@When("^I withdraw \\$(\\d+)$")
+	public void iWithdraw$(int dollars) throws Throwable {
+		helper.getTeller().withdrawFrom(helper.getMyAccount(), dollars);
+	}
 
   @Then("^\\$(\\d+) should be dispensed$")
   public void $ShouldBeDispensed(int dollars) throws Throwable {
