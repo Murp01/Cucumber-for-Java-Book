@@ -15,8 +15,8 @@ public class KnowsTheDomain {
 		  if (myAccount == null){
 			  myAccount = new Account();
 		  }
-		return myAccount;
-	  }
+		  	  return myAccount;
+	  	  }
 	  
 	  public CashSlot getCashSlot(){
 		  if (cashSlot == null ){
