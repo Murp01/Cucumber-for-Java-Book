@@ -8,8 +8,8 @@ import support.KnowsTheDomain;
 public class CashSlotSteps {
 	KnowsTheDomain helper;
 
-	public CashSlotSteps() {
-		helper = new KnowsTheDomain();
+	public CashSlotSteps(KnowsTheDomain helper) {
+		this.helper = new KnowsTheDomain();
 	}
 
 	@Then("^\\$(\\d+) should be dispensed$")

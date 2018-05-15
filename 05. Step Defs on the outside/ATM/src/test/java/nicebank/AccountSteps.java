@@ -7,12 +7,12 @@ import cucumber.api.java.en.Given;
 import support.KnowsTheDomain;
 import transforms.MoneyConverter;
 
-public class AccountSteps {
+public class AccountSteps {		//Seems the picocontainer is out of date.  Look at book's website
 	KnowsTheDomain helper;
 
-	public AccountSteps() {
-		helper = new KnowsTheDomain();
-	}		
+	public AccountSteps(KnowsTheDomain helper) {
+		this.helper = helper;
+	}	
 	
 	@Given("^I have deposited \\$(\\d+\\.\\d+) in my account$")
 	public void iHaveDeposited$InMyAccount(@Transform(MoneyConverter.class)Money amount) throws Throwable {

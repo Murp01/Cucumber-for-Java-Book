@@ -6,8 +6,8 @@ import support.KnowsTheDomain;
 public class TellerSteps {
 	KnowsTheDomain helper;
 
-	public TellerSteps() {
-		helper = new KnowsTheDomain();
+	public TellerSteps(KnowsTheDomain helper) {
+		this.helper = new KnowsTheDomain();
 	}
 	
 	@When("^I withdraw \\$(\\d+)$")
